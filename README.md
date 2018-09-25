@@ -46,7 +46,7 @@ When a mergebot requires a Notifier plug to work, you can select a Slack Plug Co
 
 <p align="center">
   <img alt="Issue Tracker plug select"
-       src="https://raw.githubusercontent.com/mig42/slackplug/master/doc/img/notifier-plug-select.png" />
+       src="https://raw.githubusercontent.com/PlasticSCM/slackplug/master/doc/img/notifier-plug-select.png" />
 </p>
 
 
@@ -56,7 +56,7 @@ When you create a new Slack Plug Configuration, you have to fill in the followin
 
 <p align="center">
   <img alt="Slackplug configuration example"
-       src="https://raw.githubusercontent.com/mig42/slackplug/master/doc/img/configuration-example.png" />
+       src="https://raw.githubusercontent.com/PlasticSCM/slackplug/master/doc/img/configuration-example.png" />
 </p>
 
 
@@ -71,14 +71,14 @@ in your Slack workspace.
 
 <p align="center">
   <img alt="Issue Tracker plug select"
-       src="https://raw.githubusercontent.com/mig42/slackplug/master/doc/img/create-app.png" />
+       src="https://raw.githubusercontent.com/PlasticSCM/slackplug/master/doc/img/create-app.png" />
 </p>
 
 Give the new app a name and choose the Slack Workspace where it will be stored.
 
 <p align="center">
   <img alt="Issue Tracker plug select"
-       src="https://raw.githubusercontent.com/mig42/slackplug/master/doc/img/create-app-form.png" />
+       src="https://raw.githubusercontent.com/PlasticSCM/slackplug/master/doc/img/create-app-form.png" />
 </p>
 
 Then, proceed to create a new **bot user**: you'll find the link under *Slack App
@@ -86,14 +86,14 @@ dashboard* > *Add features and functionality* > *Bots*.
 
 <p align="center">
   <img alt="Issue Tracker plug select"
-       src="https://raw.githubusercontent.com/mig42/slackplug/master/doc/img/add-bot-user-steps.png" />
+       src="https://raw.githubusercontent.com/PlasticSCM/slackplug/master/doc/img/add-bot-user-steps.png" />
 </p>
 
 Click the "Add a Bot user" button in the new screen. You'll see the form below.
 
 <p align="center">
   <img alt="Issue Tracker plug select"
-       src="https://raw.githubusercontent.com/mig42/slackplug/master/doc/img/add-bot-user-form.png" />
+       src="https://raw.githubusercontent.com/PlasticSCM/slackplug/master/doc/img/add-bot-user-form.png" />
 </p>
 
 Fill in the fields and click "Add Bot User".
@@ -104,7 +104,7 @@ will be available in your workspace and it will enable the Bot user.
 
 <p align="center">
   <img alt="Issue Tracker plug select"
-       src="https://raw.githubusercontent.com/mig42/slackplug/master/doc/img/install-app-to-workspace.png" />
+       src="https://raw.githubusercontent.com/PlasticSCM/slackplug/master/doc/img/install-app-to-workspace.png" />
 </p>
 
 Finally, click on the *Features* > *OAuth & permissions* link. You'll see two different
@@ -113,7 +113,7 @@ labeled *Bot User OAuth Access Token*. You're done!
 
 <p align="center">
   <img alt="Issue Tracker plug select"
-       src="https://raw.githubusercontent.com/mig42/slackplug/master/doc/img/tokens.png" />
+       src="https://raw.githubusercontent.com/PlasticSCM/slackplug/master/doc/img/tokens.png" />
 </p>
 
 # Support
