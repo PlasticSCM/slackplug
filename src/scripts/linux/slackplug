@@ -1,0 +1,4 @@
+#!/bin/sh
+
+SLACKPLUG_BIN_DIR=`dirname \`readlink -fn $0\``
+exec "/opt/plasticscm5/server/mono_setup" slackplug mono "$SLACKPLUG_BIN_DIR/slackplug.exe" "$@"

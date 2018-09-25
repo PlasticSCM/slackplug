@@ -1,0 +1,8 @@
+﻿[
+   {
+      "name":"slackToken",
+      "displayName":"Slack token",
+      "type":"string",
+      "description":"Token used to connect to Slack API."
+   }
+]
