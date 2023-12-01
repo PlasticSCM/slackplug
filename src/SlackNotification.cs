@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
-using log4net;
+using Codice.LogWrapper;
 
 namespace SlackPlug
 {
     static class SlackNotification
     {
-        internal static void Notify(string message, List<string> recipients,
+        async internal static Task Notify(string message, List<string> recipients,
             SlackCache slackCache, string slackToken)
         {
             string errorMessage = string.Empty;
@@ -19,11 +20,11 @@ namespace SlackPlug
 
                     if (slackId.Attrs.IsChannel)
                     {
-                        NotifyChannel(slackId, message, slackCache, slackToken);
+                        await NotifyChannel(slackId, message, slackCache, slackToken);
                         continue;
                     }
 
-                    NotifyUser(slackId, message, slackCache, slackToken);
+                    await NotifyUser(slackId, message, slackCache, slackToken);
                 }
                 catch(Exception e)
                 {
@@ -44,42 +45,26 @@ namespace SlackPlug
             throw new Exception(errorMessage.Trim());
         }
 
-        static void NotifyUser(SlackId slackId, string message,
+        async static Task NotifyUser(SlackId slackId, string message,
             SlackCache slackCache, string slackToken)
         {
-            string userId = SlackUser.GetId(slackId, slackCache);
+            string userId = await SlackUser.GetId(slackId, slackCache);
 
             if (string.IsNullOrEmpty(userId))
                 throw new Exception(string.Format("User {0} not found", slackId.Id));
 
-            string channelId = null;
-            try
-            {
-                channelId = SlackAPI.OpenIm(slackToken, userId);
-            }
-            catch
-            {
-                // if can't connect to the user
-                // means the user no longer exists => reload the users cache
-                mLog.ErrorFormat(
-                    "Error openning a channel to user {0}. Reloading cache.",
-                    slackId.Id);
-                slackCache.ReloadUsers();
-                throw;
-            }
-
-            SlackAPI.PostChatMessage(slackToken, channelId, message);
+            await SlackAPI.PostChatMessage(slackToken, userId, message);
         }
 
-        static void NotifyChannel(SlackId slackId, string message,
+        async static Task NotifyChannel(SlackId slackId, string message,
             SlackCache slackCache, string slackToken)
         {
-            string channelId = SlackChannel.GetId(slackId, slackCache);
+            string channelId = await SlackChannel.GetId(slackId, slackCache);
 
             if (string.IsNullOrEmpty(channelId))
                 throw new Exception(string.Format("Channel {0} not found", slackId.Id));
 
-            SlackAPI.PostChatMessage(slackToken,channelId, message);
+            await SlackAPI.PostChatMessage(slackToken,channelId, message);
         }
 
         static ILog mLog = LogManager.GetLogger("SlackNotification");

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Threading.Tasks;
 
-using log4net;
-using log4net.Config;
+using Codice.LogWrapper;
 
 namespace SlackPlug
 {
@@ -17,7 +17,7 @@ namespace SlackPlug
 
                 bool bValidArgs = plugArgs.Parse();
 
-                ConfigureLogging(plugArgs.BotName);
+                ConfigureLogging(plugArgs.BasePath, plugArgs.BotName);
 
                 mLog.InfoFormat("SlackPlug [{0}] started. Version [{1}]",
                     plugArgs.BotName,
@@ -34,10 +34,14 @@ namespace SlackPlug
 
                 CheckArguments(plugArgs);
 
-                Config config = ReadConfigFromFile(plugArgs.ConfigFilePath);
+                Config config = ParseConfig.Parse(File.ReadAllText(plugArgs.ConfigFilePath));
 
-                LaunchSlackPlug(plugArgs.WebSocketUrl, config.SlackToken,
-                    plugArgs.BotName, plugArgs.ApiKey);
+                LaunchSlackPlug(
+                    plugArgs.WebSocketUrl,
+                    config.SlackToken,
+                    plugArgs.BotName,
+                    plugArgs.ApiKey,
+                    plugArgs.Organization);
 
                 return 0;
             }
@@ -50,9 +54,16 @@ namespace SlackPlug
             }
         }
 
-        static void LaunchSlackPlug(string serverUrl, string slackToken, string plugName, string apiKey)
+        static void LaunchSlackPlug(
+            string serverUrl,
+            string slackToken,
+            string plugName,
+            string apiKey,
+            string organization)
         {
             mLog.DebugFormat("Starting ws...");
+
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
             WebSocketRequest request = new WebSocketRequest(slackToken);
             request.Init();
@@ -62,6 +73,7 @@ namespace SlackPlug
                 "notifierPlug",
                 plugName,
                 apiKey,
+                organization,
                 request.ProcessMessage);
 
             ws.ConnectWithRetries();
@@ -84,41 +96,24 @@ namespace SlackPlug
                 "--config slack-config.conf");
         }
 
-        static void ConfigureLogging(string plugName)
+        static void ConfigureLogging(string basePath, string plugName)
         {
             if (string.IsNullOrEmpty(plugName))
                 plugName = DateTime.Now.ToString("yyyy_MM_dd_HH_mm");
 
             try
             {
-                string log4netpath = LogConfig.GetLogConfigFile();
-                log4net.GlobalContext.Properties["Name"] = plugName;
-                XmlConfigurator.Configure(new FileInfo(log4netpath));
+                string logOutputPath = Path.GetFullPath(Path.Combine(
+                   basePath,
+                   "../../../../logs",
+                   "slackplug." + plugName + ".log.txt"));
+                string log4netpath = LogConfig.GetLogConfigFile(basePath);
+                log4net.GlobalContext.Properties["LogOutputPath"] = logOutputPath;
+                Configurator.Configure(log4netpath);
             }
             catch
             {
                 //it failed configuring the logging info; nothing to do.
-            }
-        }
-
-        static Config ReadConfigFromFile(string file)
-        {
-            try
-            {
-                string fileContent = System.IO.File.ReadAllText(file);
-                Config result = Newtonsoft.Json.JsonConvert.DeserializeObject<Config>(fileContent);
-
-                if (result == null)
-                    throw new Exception(string.Format(
-                        "Config file {0} is not valid", file));
-
-                CheckFieldIsNotEmpty("slackToken", result.SlackToken);
-
-                return result;
-            }
-            catch (Exception e)
-            {
-                throw new Exception("The config cannot be loaded. Error: " + e.Message);
             }
         }
 
@@ -131,20 +126,6 @@ namespace SlackPlug
                 "Please type a valid {2}. Example:  \"{3}\"",
                 fielName, Environment.NewLine, type, example);
             throw new Exception(message);
-        }
-
-        static void CheckFieldIsNotEmpty(string fieldName, string fieldValue)
-        {
-            if (!string.IsNullOrEmpty(fieldValue))
-                return;
-
-            throw BuildFieldNotDefinedException(fieldName);
-        }
-
-        static Exception BuildFieldNotDefinedException(string fieldName)
-        {
-            throw new Exception(string.Format(
-                "The field '{0}' must be defined in the config", fieldName));
         }
 
         static void PrintUsage()

@@ -22,9 +22,19 @@
             get { return mApiKey; }
         }
 
+        internal string Organization
+        {
+            get { return mOrganization; }
+        }
+
         internal string ConfigFilePath
         {
             get { return mConfigFilePath; }
+        }
+
+        internal string BasePath
+        {
+            get { return mBasePath; }
         }
 
         internal PlugArguments(string[] args)
@@ -80,9 +90,21 @@
                     continue;
                 }
 
+                if (args[i] == ORGANIZATION_KEY_ARG)
+                {
+                    bValidArgs = ReadArgumentValue(args, ++i, out mOrganization);
+                    continue;
+                }
+
                 if (args[i] == CONFIG_FILE_ARG)
                 {
                     bValidArgs = ReadArgumentValue(args, ++i, out mConfigFilePath);
+                    continue;
+                }
+
+                if (args[i] == BASEPATH_ARG)
+                {
+                    bValidArgs = ReadArgumentValue(args, ++i, out mBasePath);
                     continue;
                 }
             }
@@ -118,8 +140,10 @@
 
         string mBotName;
         string mApiKey;
+        string mOrganization;
         string mConfigFilePath;
         string mWebSocketUrl;
+        string mBasePath;
 
         bool mShowUsage = false;
 
@@ -128,18 +152,15 @@
         const string WEB_SOCKET_URL_ARG = "--server";
         const string BOT_NAME_ARG = "--name";
         const string API_KEY_ARG = "--apikey";
+        const string ORGANIZATION_KEY_ARG = "--organization";
         const string CONFIG_FILE_ARG = "--config";
+        const string BASEPATH_ARG = "--basepath";
 
         static string[] VALID_ARGS_NAMES = new string[] {
             WEB_SOCKET_URL_ARG,
             BOT_NAME_ARG,
             API_KEY_ARG,
-            CONFIG_FILE_ARG};
-
-        const string SERVER_ARG = "--server";
-        const string HELP_ARG = "--help";
-        const string HELP_SHORT_ARG = "-h";
-        const string USAGE_ARG = "--?";
-        const string USAGE_SHORT_ARG = "-?";
+            CONFIG_FILE_ARG,
+            BASEPATH_ARG};
     }
 }

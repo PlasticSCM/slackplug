@@ -3,7 +3,7 @@ using System.Threading;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 
-using log4net;
+using Codice.LogWrapper;
 using WebSocketSharp;
 using System.Threading.Tasks;
 
@@ -16,17 +16,21 @@ namespace SlackPlug
             string type,
             string name,
             string apikey,
+            string organization,
             Func<string, string> processMessage)
         {
             mName = name;
             mApiKey = apikey;
+            mOrganization = organization;
             mType = type;
 
             mWebSocket = new WebSocket(serverUrl);
             mWebSocket.OnMessage += OnMessage;
             mWebSocket.OnClose += OnClose;
             mWebSocket.Log.Output = LogOutput;
-            mWebSocket.SslConfiguration.ServerCertificateValidationCallback += CertificateValidation;
+
+            if (mWebSocket.IsSecure)
+                mWebSocket.SslConfiguration.ServerCertificateValidationCallback += CertificateValidation;
 
             mProcessMessage = processMessage;
         }
@@ -59,7 +63,7 @@ namespace SlackPlug
             if (!mWebSocket.IsAlive)
                 return false;
 
-            mWebSocket.Send(Messages.BuildLoginMessage(mApiKey));
+            mWebSocket.Send(Messages.BuildLoginMessage(mOrganization, mApiKey));
             mWebSocket.Send(Messages.BuildRegisterPlugMessage(mName, mType));
 
             mLog.Debug(string.Format("Plug ({0}) connected!", mName));
@@ -95,9 +99,10 @@ namespace SlackPlug
 
         readonly WebSocket mWebSocket;
 
-        readonly ILog mLog = LogManager.GetLogger("websocket");
+        readonly ILog mLog = LogManager.GetLogger("slackplug-websocket");
         readonly string mName;
         readonly string mApiKey;
+        readonly string mOrganization;
         readonly string mType;
         readonly Func<string, string> mProcessMessage;
 

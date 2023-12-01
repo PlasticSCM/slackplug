@@ -1,7 +1,6 @@
 ﻿using System;
-using System;
-using log4net;
-using WebSocketSharp;
+
+using Codice.LogWrapper;
 
 namespace SlackPlug
 {
@@ -10,12 +9,12 @@ namespace SlackPlug
         internal WebSocketRequest(string slackToken)
         {
             mSlackToken = slackToken;
-            mSlackCache = new SlackCache(slackToken);
+            mSlackCache = new SlackCache(slackToken, null);
         }
 
         internal void Init()
         {
-            mSlackCache.Reload();
+            mSlackCache.Reload().Wait();
         }
 
         internal string ProcessMessage(string rawMessage)
@@ -25,7 +24,8 @@ namespace SlackPlug
             {
                 NotificationMessage message = Messages.ReadNotificationMessage(rawMessage);
 
-                SlackNotification.Notify(message.Message, message.Recipients, mSlackCache, mSlackToken);
+                SlackNotification.Notify(
+                    message.Message, message.Recipients, mSlackCache, mSlackToken).Wait();
 
                 return Messages.BuildSuccessfulResponse(requestId);
             }

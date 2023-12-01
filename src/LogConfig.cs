@@ -5,15 +5,17 @@ namespace SlackPlug
 {
     internal class LogConfig
     {
-        internal static string GetLogConfigFile()
+        internal static string GetLogConfigFile(string basePath)
         {
-            return Path.Combine(GetExecutingAssemblyDirectory(), LOG_CONFIG_FILE);
+            return Path.Combine(GetBasePath(basePath), LOG_CONFIG_FILE);
         }
 
-        static string GetExecutingAssemblyDirectory()
+        static string GetBasePath(string basePath)
         {
-            return Path.GetDirectoryName(
-                Assembly.GetExecutingAssembly().Location);
+            if (string.IsNullOrEmpty(basePath))
+                return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+            return basePath;
         }
 
         const string LOG_CONFIG_FILE = "slackplug.log.conf";

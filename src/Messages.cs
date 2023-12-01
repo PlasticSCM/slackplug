@@ -17,11 +17,12 @@ namespace SlackPlug
             return obj.ToString();
         }
 
-        internal static string BuildLoginMessage(string token)
+        internal static string BuildLoginMessage(string organization, string token)
         {
             JObject obj = new JObject(
                 new JProperty("action", "login"),
-                new JProperty("key", token));
+                new JProperty("key", token),
+                new JProperty("organization", organization));
 
             return obj.ToString();
         }
