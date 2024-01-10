@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "slackplug", "slackplug.csproj", "{43E29854-4486-402D-BD4C-A821713C8060}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "slackplug", "slackplug.csproj", "{C71D2D94-9DC0-447C-972D-20BA1E3DD153}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,12 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{43E29854-4486-402D-BD4C-A821713C8060}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{43E29854-4486-402D-BD4C-A821713C8060}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{43E29854-4486-402D-BD4C-A821713C8060}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{43E29854-4486-402D-BD4C-A821713C8060}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C71D2D94-9DC0-447C-972D-20BA1E3DD153}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C71D2D94-9DC0-447C-972D-20BA1E3DD153}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C71D2D94-9DC0-447C-972D-20BA1E3DD153}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C71D2D94-9DC0-447C-972D-20BA1E3DD153}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7BBF8F50-F2F3-4C26-BC90-F53D586934E3}
 	EndGlobalSection
 EndGlobal

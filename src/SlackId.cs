@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace SlackPlug
 {
@@ -15,7 +12,6 @@ namespace SlackPlug
         internal class Attributes
         {
             internal bool IsChannel;
-            internal bool IsUser;
             internal bool IsSlackID;
         }
 
@@ -36,7 +32,6 @@ namespace SlackPlug
                 return new SlackId(input.Substring(1), new Attributes()
                 {
                     IsChannel = true,
-                    IsUser = false,
                     IsSlackID = false
                 });
             }
@@ -47,7 +42,6 @@ namespace SlackPlug
                 return new SlackId(input.Substring(1), new Attributes()
                 {
                     IsChannel = false,
-                    IsUser = true,
                     IsSlackID = false
                 });
             }
@@ -58,7 +52,6 @@ namespace SlackPlug
                 return new SlackId(input, new Attributes()
                 {
                     IsChannel = true,
-                    IsUser = false,
                     IsSlackID = true
                 });
             }
@@ -69,7 +62,6 @@ namespace SlackPlug
                 return new SlackId(input, new Attributes()
                 {
                     IsChannel = false,
-                    IsUser = true,
                     IsSlackID = true
                 });
             }
@@ -78,7 +70,6 @@ namespace SlackPlug
             return new SlackId(input, new Attributes()
             {
                 IsChannel = false,
-                IsUser = true,
                 IsSlackID = false
             });
         }
@@ -99,11 +90,8 @@ namespace SlackPlug
             return mUserRegex.IsMatch(input);
         }
 
-        const string CHANNEL_PREFFIX = "#";
-        const string USER_PREFFIX = "@";
-
-        const string CHANNEL_REGEX_PATTERN = "^[C][A-Z0-9]{8}$";
-        const string USER_REGEX_PATTERN = "^[UW][A-Z0-9]{8}$";
+        const string CHANNEL_REGEX_PATTERN = "^[C][A-Z0-9]+$";
+        const string USER_REGEX_PATTERN = "^[UW][A-Z0-9]+$";
 
         static Regex mUserRegex = new Regex(USER_REGEX_PATTERN);
         static Regex mChannelRegex = new Regex(CHANNEL_REGEX_PATTERN);
